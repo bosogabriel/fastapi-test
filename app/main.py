@@ -1,13 +1,10 @@
 from fastapi import FastAPI
+from iris.router import iris_classifier_router
 
 app = FastAPI()
+app.include_router(iris_classifier_router.router, prefix='/iris')
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "Worlds"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+@app.get('/healthcheck', status_code=200)
+async def healthcheck():
+    return 'Iris classifier is all ready to go!'
